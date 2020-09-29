@@ -10,10 +10,6 @@
  * @author Yoann Pigné
  */
 
-/* include unistd on *nix systems for sleep */ 
-#if !defined(__MINGW32__) && !defined(_MSC_VER) 
-#include <unistd.h> 
-#endif 
 
 #include "netstream-sender.h"
 

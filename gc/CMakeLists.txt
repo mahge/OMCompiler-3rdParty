@@ -63,8 +63,8 @@ option(enable_register_main_static_data "Perform the initial guess of data root 
 option(enable_checksums "Report erroneously cleared dirty bits" OFF)
 option(enable_werror "Pass -Werror to the C compiler (treat warnings as errors)" OFF)
 option(enable_single_obj_compilation "Compile all libgc source files into single .o" OFF)
-option(enable_handle_fork "Attempt to ensure a usable collector after fork()" ON)
-option(disable_handle_fork "Prohibit installation of pthread_atfork() handlers" OFF)
+option(enable_handle_fork "Attempt to ensure a usable collector after fork()" OFF)
+option(disable_handle_fork "Prohibit installation of pthread_atfork() handlers" ON)
 option(install_headers "Install header files" ON)
 
 add_definitions("-DALL_INTERIOR_POINTERS -DNO_EXECUTE_PERMISSION")
@@ -113,15 +113,17 @@ string(TOLOWER ${_HOST} HOST)
 message(STATUS "TARGET = ${HOST}")
 
 if (enable_threads)
-  find_package(Threads REQUIRED)
-  message(STATUS "Thread library: ${CMAKE_THREAD_LIBS_INIT}")
+  # find_package(Threads REQUIRED)
+  find_package(PThreads REQUIRED)
+  message(STATUS "Thread library: ${PThreads4W_LIBRARY}")
   include_directories(libatomic_ops/src)
-  include_directories(${Threads_INCLUDE_DIR})
-  set(THREADDLLIBS ${CMAKE_THREAD_LIBS_INIT})
+  include_directories(${PThreads4W_INCLUDE_DIR})
+  set(THREADDLLIBS ${PThreads4W_LIBRARY})
   if (NOT (APPLE OR CYGWIN OR MSYS OR WIN32 OR HOST MATCHES mips-.*-irix6.*))
     set(THREADDLLIBS ${THREADDLLIBS} -ldl)
                                 # The predefined CMAKE_DL_LIBS may be broken.
   endif()
+  message(STATUS "************ ${CMAKE_USE_PTHREADS_INIT}")
 endif(enable_threads)
 
 # Thread support detection.
@@ -131,7 +133,7 @@ if (CMAKE_USE_PTHREADS_INIT)
     message(FATAL_ERROR "HP/UX 10 POSIX threads are not supported.")
   endif()
   # Assume the compiler supports C11 (GCC) atomic intrinsics.
-  add_definitions("-DGC_BUILTIN_ATOMIC")
+  # add_definitions("-DGC_BUILTIN_ATOMIC")
   # Common defines for POSIX platforms.
   add_definitions("-DGC_THREADS -D_REENTRANT")
   if (enable_parallel_mark)

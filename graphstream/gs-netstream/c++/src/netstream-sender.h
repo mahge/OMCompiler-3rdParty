@@ -15,9 +15,14 @@
 
 #include <iostream>
 
-#if !defined(__MINGW32__)
+#if !defined(WIN32)
 #include <sys/socket.h>
+#else
+#include <windows.h>
+// Win "Sleep" vs posix "sleep"
+#define sleep(x) Sleep(x)
 #endif
+
 #include <errno.h>
 
 #include "netstream-sizes.h"

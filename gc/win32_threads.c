@@ -65,7 +65,7 @@
 
 # include <pthread.h>
 # ifdef CAN_CALL_ATFORK
-#   include <unistd.h>
+//#   include <unistd.h>
 # endif
 
 #elif !defined(MSWINCE)

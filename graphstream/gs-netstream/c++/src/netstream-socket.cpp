@@ -6,7 +6,7 @@
  ** file in the root of the Shawn source tree for further details.     **
  ************************************************************************/
 
-#if !defined(WIN32) || !defined(__MINGW32__)
+#if !defined(WIN32) && !defined(__MINGW32__)
 	#include <sys/types.h>
 	#include <sys/socket.h>
 	#include <netinet/in.h>
@@ -23,7 +23,7 @@
 
 	#include <winsock2.h>
 
-#if !defined(__MINGW32__)
+#if !defined(WIN32)
 	#ifndef vsnprintf
 		#define vsnprintf _vsnprintf
 	#endif

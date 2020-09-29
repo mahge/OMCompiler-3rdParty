@@ -46,11 +46,11 @@ target_include_directories(omcgc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/gc/include)
 # Or -DGC_THREADS (for auto detection on other systems.)
 # On Windows with MinGW OM uses pthreads-win32. GC_WIN32_PTHREADS is required
 # to be set explicitly for use of pthreads API on Windows.
-if(MINGW)
+if(MINGW OR MSVC)
     target_compile_definitions(omcgc PUBLIC GC_WIN32_PTHREADS)
-else(MINGW)
+else(MINGW OR MSVC)
     target_compile_definitions(omcgc PUBLIC GC_THREADS)
-endif(MINGW)
+endif(MINGW OR MSVC)
 add_library(omc::3rd::omcgc ALIAS omcgc)
 
 
@@ -71,15 +71,15 @@ add_library(omc::3rd::libzmq ALIAS libzmq)
 
 
 # lpsolve55
-omc_add_subdirectory(lpsolve)
-add_library(omc::3rd::lpsolve55 ALIAS lpsolve55)
+# omc_add_subdirectory(lpsolve)
+# add_library(omc::3rd::lpsolve55 ALIAS lpsolve55)
 
 
 
 # metis
-omc_add_subdirectory(metis-5.1.0)
-add_library(omc::3rd::metis ALIAS metis)
-target_include_directories(metis INTERFACE metis-5.1.0/include)
+# omc_add_subdirectory(metis-5.1.0)
+# add_library(omc::3rd::metis ALIAS metis)
+# target_include_directories(metis INTERFACE metis-5.1.0/include)
 
 
 # ModelicaExternalC
@@ -100,8 +100,11 @@ add_library(omc::3rd::modelica_io ALIAS ModelicaIO)
 
 
 
-# # regex
-# omc_add_subdirectory(regex-0.12)
+# regex
+if(MSVC)
+omc_add_subdirectory(regex-0.12)
+add_library(omc::3rd::regex ALIAS omcregex)
+endif()
 
 # SuiteSparse
 omc_add_subdirectory(SuiteSparse)

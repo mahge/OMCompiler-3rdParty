@@ -160,14 +160,20 @@ antlr3Fopen(pANTLR3_UINT8 filename, const char * mode)
 #if defined(__MINGW32__) || defined(_MSC_VER)
     const char *filename1 = (const char *)filename;
     int len = MultiByteToWideChar(CP_UTF8, 0, filename1, -1, NULL, 0);
-    WCHAR unicodeFilename[len];
-    MultiByteToWideChar(CP_UTF8, 0, filename1, -1, unicodeFilename, len);
+    // WCHAR unicodeFilename[len];
+	WCHAR* unicodeFilename = (WCHAR*)malloc(len * sizeof(WCHAR));
+	MultiByteToWideChar(CP_UTF8, 0, filename1, -1, unicodeFilename, len);
 
     len = MultiByteToWideChar(CP_UTF8, 0, mode, -1, NULL, 0);
-    WCHAR unicodeMode[len];
-    MultiByteToWideChar(CP_UTF8, 0, mode, -1, unicodeMode, len);
+    // WCHAR unicodeMode[len];
+	WCHAR* unicodeMode = (WCHAR*)malloc(len * sizeof(WCHAR));
+	MultiByteToWideChar(CP_UTF8, 0, mode, -1, unicodeMode, len);
 
-    return  (ANTLR3_FDSC)_wfopen(unicodeFilename, unicodeMode);
+    ANTLR3_FDSC fdsc = _wfopen(unicodeFilename, unicodeMode);
+
+	free(unicodeFilename);
+	free(unicodeMode);
+	return fdsc;
 #else
     return  (ANTLR3_FDSC)fopen((const char *)filename, mode);
 #endif
@@ -188,10 +194,13 @@ antlr3Fsize(pANTLR3_UINT8 fileName)
     struct _stat	statbuf;
 #if defined(__MINGW32__) || defined(_MSC_VER)
     int len = MultiByteToWideChar(CP_UTF8, 0, (const char *)fileName, -1, NULL, 0);
-    WCHAR unicodeFileName[len];
-    MultiByteToWideChar(CP_UTF8, 0, (const char *)fileName, -1, unicodeFileName, len);
+    // WCHAR unicodeFileName[len];
+	WCHAR* unicodeFileName = (WCHAR*)malloc(len * sizeof(WCHAR));
+	MultiByteToWideChar(CP_UTF8, 0, (const char *)fileName, -1, unicodeFileName, len);
 
     _wstat(unicodeFileName, &statbuf);
+
+	free(unicodeFileName);
 #else
     _stat((const char *)fileName, &statbuf);
 #endif

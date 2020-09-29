@@ -7,6 +7,11 @@ set(libModelicaExternalC_SOURCES C-Sources/ModelicaFFT.c
                                  C-Sources/ModelicaInternal.c
                                  C-Sources/ModelicaRandom.c
                                  C-Sources/ModelicaStrings.c)
+
+if(MSVC)
+  set(libModelicaExternalC_SOURCES ${libModelicaExternalC_SOURCES} C-Sources/win32_dirent.c)
+endif()
+
 add_library(ModelicaExternalC STATIC ${libModelicaExternalC_SOURCES})
 
 
