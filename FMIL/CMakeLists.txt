@@ -301,7 +301,7 @@ endif()
 
 file(COPY "${FMILIBRARYHOME}/Config.cmake/fmilib.h" DESTINATION "${FMILibrary_BINARY_DIR}")
 
-install(TARGETS ${FMILIB_TARGETS})
+install(TARGETS ${FMILIB_TARGETS} DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 install(FILES 
 			"${FMILIBRARYHOME}/FMILIB_Readme.txt"

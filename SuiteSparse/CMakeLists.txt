@@ -138,7 +138,7 @@ if(SS_DIR)
     set(AMD_OBJECTS "${AMD_OBJECTS};\$<TARGET_OBJECTS:amd_${mode}>")
   endforeach()
   add_library(amd ${AMD_OBJECTS})
-  install(TARGETS amd LIBRARY)
+  install(TARGETS amd DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
   #collect and build the BTF part
   set(BTF_DIR "${SS_DIR}/BTF")
@@ -159,7 +159,7 @@ if(SS_DIR)
     set(BTF_OBJECTS "${BTF_OBJECTS};\$<TARGET_OBJECTS:btf_object_${mode}>")
   endforeach()
   add_library(btf ${BTF_OBJECTS})
-  install(TARGETS btf LIBRARY)
+  install(TARGETS btf DESTINATION ${CMAKE_INSTALL_LIBDIR})
   install(FILES ${BTF_DIR}/Include/btf.h DESTINATION include/omc/c/suitesparse/Include)
 
   #add colamd
@@ -177,7 +177,7 @@ if(SS_DIR)
     message(STATUS "--> add -lm to colamd linker")
   endif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUXX)
   
-  install(TARGETS colamd LIBRARY)
+  install(TARGETS colamd DESTINATION ${CMAKE_INSTALL_LIBDIR})
   install(FILES ${COLAMD_DIR}/Include/colamd.h DESTINATION include/omc/c/suitesparse/Include)
 
   #add klu
@@ -199,7 +199,7 @@ if(SS_DIR)
   endforeach()
   add_library(klu ${KLU_OBJECTS})
   target_link_libraries(klu btf colamd amd)
-  install(TARGETS klu LIBRARY)
+  install(TARGETS klu DESTINATION ${CMAKE_INSTALL_LIBDIR})
   install(FILES ${KLU_DIR}/Include/klu.h DESTINATION include/omc/c/suitesparse/Include)
 
   include_directories(${SS_DIR}/UMFPACK/Include)
@@ -265,7 +265,7 @@ if(SS_DIR)
   endforeach()
   add_library(umfpack ${UMFPACK_OBJECTS})
   target_link_libraries(umfpack amd)
-  install(TARGETS umfpack LIBRARY)
+  install(TARGETS umfpack DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 
   set(PACKAGE_TITLE "small umfpack")
